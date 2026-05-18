@@ -1,15 +1,14 @@
 public class Problema1 {
     
-    // en esta parte utiliza ek metodo recursivo que va a verificar si el arreglo esta bien ordenado de menior hasta el mayor 
+    // en esta parte utiliza ek metodo recursivo que va a verificar si el arreglo esta bien ordenado de menor hasta el mayor 
     public static boolean orden(int[] arr, int inicio) {
-        
-        //cuando se llega al ultimo elemento ya no hay pares que comparar 
-        if (inicio == arr.length - 1) return true;
-        // si quizas el elemento actual es mayor al que le sigue, el arreglo no esta ordenado 
-        if (arr[inicio] > arr[inicio + 1]) return false;
-        
-        // en esta parte se v a verificar lo que sigue del arreglo
-        return orden(arr, inicio + 1);
+
+        // si es que queda un elemento va a estar ordenado, es como si fuera ir cortando todo el array por la derecha 
+        if (tam == 1) return true;
+        // si es que el ultimo elemento esta menor que el anterior no va a estar ordenado 
+        if (arr[tam - 1] < arr[tam - 2]) return false;
+        // aca va a ver si el arreglo esta reducido en 1 
+        return orden(arr, tam - 1);
     }
 
     public static void main(String[] args) {
