@@ -1,5 +1,6 @@
-public class Problema2 {
+import java.util.Scanner;
 
+public class Problema2 {
     // retorna el segundo mayor del arreglo
     public static int segundoMayor(int[] arr, int izq, int der) {
         
@@ -14,11 +15,11 @@ public class Problema2 {
         // lo divide
         int mid = (izq + der) / 2;
 
-        // va a cada mitad
+         // va a cada mitad
         int maxIzq = Math.max(arr[izq], arr[mid]);
         int maxDer = Math.max(arr[mid + 1], arr[der]);
 
-        // combina el segundo mayor es el menor entre los maximos de cada mitad C
+         // combina el segundo mayor es el menor entre los maximos de cada mitad C
         if (maxIzq > maxDer) {
             return Math.max(maxDer, segundoMayor(arr, izq, mid));
         } else {
@@ -27,10 +28,11 @@ public class Problema2 {
     }
 
     public static void main(String[] args) {
-        int[] array1 = {8, 3, 10, 5, 7};
+        Scanner sc = new Scanner(System.in);
 
-        System.out.print("Array: ");
-        for (int n : array1) System.out.print(n + " ");
-        System.out.println("\nSegundo mayor: " + segundoMayor(array1, 0, array1.length - 1)); 
-    }
-}
+        System.out.print("cuantos numeros: ");
+        int tam = sc.nextInt();
+        int[] array = new int[tam];
+
+        for (int i = 0; i < tam; i++) {
+            System.out.print("numero " + (i + 1) + 
