@@ -1,43 +1,36 @@
 public class Problema2 {
 
-    // va a guardar el maximo y segundo maximo
-    static int max = 0, segundo = 0;
-
-    public static void segundoMayor(int[] arr, int izq, int der) {
+    // retorna el segundo mayor del arreglo
+    public static int segundoMayor(int[] arr, int izq, int der) {
         
-        // en el caso base un solo elemento y no hay nada que dividir 
-        if (izq == der) return;
+        //  en el caso base los dos elementos los comparamos y vamos a retornar el menor
+        if (der - izq == 1) {
+            return Math.min(arr[izq], arr[der]);
+        }
 
-        // divide el arreglo en 2 mitades 
+        // en este solo va un elemento 
+        if (izq == der) return arr[izq];
+
+        // lo divide
         int mid = (izq + der) / 2;
 
-        // va a recursidad para cada mitad
-        segundoMayor(arr, izq, mid);    
-        segundoMayor(arr, mid + 1, der);  
+        // va a cada mitad
+        int maxIzq = Math.max(arr[izq], arr[mid]);
+        int maxDer = Math.max(arr[mid + 1], arr[der]);
 
-        // recorre el rango actual buscando el max y el segundo 
-        for (int i = izq; i <= der; i++) {
-            
-            // encontramos un numero mayor al maximo actual
-            if (arr[i] > max) {
-                segundo = max;  
-                max = arr[i]; 
-            } 
-            // si no es mayor al que es maximo pero si al segundo y no es igual al maximo
-            else if (arr[i] > segundo && arr[i] != max) {
-                segundo = arr[i];
-            }
+        // combina el segundo mayor es el menor entre los maximos de cada mitad C
+        if (maxIzq > maxDer) {
+            return Math.max(maxDer, segundoMayor(arr, izq, mid));
+        } else {
+            return Math.max(maxIzq, segundoMayor(arr, mid + 1, der));
         }
     }
 
     public static void main(String[] args) {
         int[] array1 = {8, 3, 10, 5, 7};
 
-        segundoMayor(array1, 0, array1.length - 1);
-
         System.out.print("Array: ");
         for (int n : array1) System.out.print(n + " ");
-
-        System.out.println("\nSegundo mayor: " + segundo); // 8
+        System.out.println("\nSegundo mayor: " + segundoMayor(array1, 0, array1.length - 1)); 
     }
 }
