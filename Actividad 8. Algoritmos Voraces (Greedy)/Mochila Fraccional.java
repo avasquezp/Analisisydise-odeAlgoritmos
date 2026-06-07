@@ -2,68 +2,105 @@ import java.util.Scanner;
 
 public class MochilaFraccional {
 
-    public static void main(String[] args) {
+    // va a leer los datos del usuario 
+    static void leerDatos(Scanner sc, String[] nombres, double[] valores, double[] pesos) {
 
-        Scanner sc = new Scanner(System.in);
+        for (int i = 0; i < nombres.length; i++) {
 
-        // aqui es la entrada de datos 
-        System.out.print("capacidad de la mochila: ");
-        double capacidad = sc.nextDouble();
-
-        System.out.print("numero de objetos: ");
-        int n = sc.nextInt();
-
-        // en esta parte cada indice i representa un mismo objeto
-        String[] nombres = new String[n];
-        double[] valores = new double[n];
-        double[] pesos   = new double[n];
-
-        for (int i = 0; i < n; i++) {
             System.out.print("nombre del objeto " + (i + 1) + ": ");
             nombres[i] = sc.next();
+
             System.out.print("valor: ");
             valores[i] = sc.nextDouble();
+
             System.out.print("peso: ");
             pesos[i] = sc.nextDouble();
         }
+    }
 
-        // aca se hace el ordenamiento greddy, se va ordenando por razon de valor y peso de mayor a menor, un objeto con mayor razon dara mas valor por cada unidad de peso
+    // ordena por el valor y el peso que va de mayor a menor ──
+    static void ordenar(String[] nombres, double[] valores, double[] pesos) {
+
+        int n = nombres.length;
+
         for (int i = 0; i < n - 1; i++) {
             for (int j = i + 1; j < n; j++) {
+
+                // si el objeto j es más provechoso que el objeto i se intercambian
                 if ((valores[j] / pesos[j]) > (valores[i] / pesos[i])) {
-                    // aqui intercambia los 3 arreglos al mismo tiempo para que pueda mantener la relacionado entre el nombre, el valor y peso 
-                    double tmpV = valores[i]; valores[i] = valores[j]; valores[j] = tmpV;
-                    double tmpP = pesos[i];   pesos[i]   = pesos[j];   pesos[j]   = tmpP;
-                    String tmpN = nombres[i]; nombres[i] = nombres[j]; nombres[j] = tmpN;
+
+                    // intercambia valores
+                    double tmpV = valores[i];
+                    valores[i]  = valores[j];
+                    valores[j]  = tmpV;
+
+                    // intercambia pesos
+                    double tmpP = pesos[i];
+                    pesos[i]    = pesos[j];
+                    pesos[j]    = tmpP;
+
+                    // intercambiar nombres, va a llegar a intercambiar los arreglos para que los indices siga representando lo mismo
+                    String tmpN = nombres[i];
+                    nombres[i]  = nombres[j];
+                    nombres[j]  = tmpN;
                 }
             }
         }
+    }
 
-        // aqui en cada paso se toma el objeto mejor, si es que cabe completo se toma entero pero si no solo toma la fraccion que cabe 
-        double restante   = capacidad;
-        double valorTotal = 0;
+    // en esta parte en el proceso va a tomar el objeto que sea mas beneficioso y que este disponible, si cabe lo toma si no solo la fraccion 
+    static void llenarMochila(String[] nombres, double[] valores, double[] pesos, double capacidad) {
+
+        double restante   = capacidad; 
+        double valorTotal = 0;         
 
         System.out.println("\nobjetos seleccionados:");
 
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < nombres.length; i++) {
 
-            // si la mochila ya está llena no se toma nada más
+            // si la mochila está llena se detiene
             if (restante == 0) break;
 
             if (pesos[i] <= restante) {
+
                 valorTotal += valores[i];
                 restante   -= pesos[i];
                 System.out.println(nombres[i] + " completo");
 
             } else {
-                // si el objeto no cabe completo, se calcula la fraccion que cabe
+
+                // se va a calcula que fraccion va a caber 
                 valorTotal += (restante / pesos[i]) * valores[i];
                 System.out.println((int) restante + "/" + (int) pesos[i]
                     + " Parte del objeto " + nombres[i]);
-                restante = 0; // mochila llena tras tomar la fracción
+
+                // la mochila queda llena tras tomar la fracción
+                restante = 0;
             }
         }
 
-        System.out.println("valor total aproximado: " + (int) valorTotal);
+        System.out.println("Valor total aproximado: " + (int) valorTotal);
+    }
+
+    // aca solo se va a encargar de pedir los datos iniciales y llamar a los métodos
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Capacidad de la mochila: ");
+        double capacidad = sc.nextDouble();
+
+        System.out.print("Numero de objetos: ");
+        int n = sc.nextInt();
+
+        // crear arreglos para guardar los datos de cada objeto
+        String[] nombres = new String[n];
+        double[] valores = new double[n];
+        double[] pesos   = new double[n];
+
+        // Llamar a los métodos en orden
+        leerDatos(sc, nombres, valores, pesos); 
+        ordenar(nombres, valores, pesos);
+        llenarMochila(nombres, valores, pesos, capacidad); 
     }
 }
