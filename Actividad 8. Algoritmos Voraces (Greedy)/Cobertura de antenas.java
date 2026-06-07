@@ -1,49 +1,47 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class CoberturaAntenas {
 
-    public static void resolver(int[] casas, int R) {
+    public static void main(String[] args) {
 
-        // ordena por casas a menor a mayor
-        Arrays.sort(casas);
+        // puse datos de entrada que ya serian fijos
+        int[] casas = {1,2,7,11,20,21,30};
+        int R = 5;
 
-        List<Integer> antenas = new ArrayList<>();
+        // aca hice un ordenamiento de las casas de menor a mayor segun la posicion
+        for (int i = 0; i < casas.length - 1; i++) {
+            for (int j = i + 1; j < casas.length; j++) {
+                if (casas[j] < casas[i]) {
+                    int tmp  = casas[i];
+                    casas[i] = casas[j];
+                    casas[j] = tmp;
+                }
+            }
+        }
+
+        // aqui va a tomar la primera casa sin cubrir y colocar la antena, las R posiciones a su derecha para llegar al maximo de cbertura── Selección Greedy 
+        int[] antenas   = new int[casas.length];
+        int cantAntenas = 0;
         int i = 0;
 
         while (i < casas.length) {
 
-            // tomar la primera casa sin cubrir
+            // primera casa sin cubrir
             int primeraSinCubrir = casas[i];
 
-            // coloca la antena R posiciones a la derecha de la casa
-            int posicion = primeraSinCubrir + R;
-            antenas.add(posicion);
+            // coloca la antena R posiciones a la derecha
+            int posAntena = primeraSinCubrir + R;
+            antenas[cantAntenas] = posAntena;
+            cantAntenas++;
 
-            // salta todas las casas que cubre la antena
-            while (i < casas.length && casas[i] <= posicion + R) {
+            // salta todas las casas que cubre esta antena
+            while (i < casas.length && casas[i] <= posAntena + R) {
                 i++;
             }
         }
 
         System.out.println("antenas colocadas aproximadamente en:");
-        for (int pos : antenas) {
-            System.out.println(pos);
+        for (int j = 0; j < cantAntenas; j++) {
+            System.out.println(antenas[j]);
         }
-        System.out.println("cantidad total: " + antenas.size());
-    }
-
-    public static void main(String[] args) {
-
-        System.out.println("--- ejemplo 1 ---");
-        int[] casas1 = {1, 2, 7, 11, 20, 21, 30};
-        resolver(casas1, 5);
-
-        System.out.println();
-
-        System.out.println("--- ejemplo 2 ---");
-        int[] casas2 = {2, 4, 8, 15, 18, 22};
-        resolver(casas2, 3);
+        System.out.println("cantidad total: " + cantAntenas);
     }
 }
