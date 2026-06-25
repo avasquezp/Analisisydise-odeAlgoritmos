@@ -1,4 +1,4 @@
-# Actividad 8 – Programacion Dinamica 
+# Actividad 9 – Programacion Dinamica 
 
 Implementación  en c++:
 - Escaleras
